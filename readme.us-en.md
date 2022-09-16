@@ -29,26 +29,35 @@ pip3 install -r requirements.txt
 python vulmap.py -u http://example.com
 ```
 
-Configure Fofa Api && Shodan Api && Ceye
+Configure Fofa Api && Shodan Api && Ceye && Hyuga
 * Fofa info: https://fofa.so/user/users/info
 ```bash
+add env email and api key
 # Replace xxxxxxxxxx with fofa email
-globals.set_value("fofa_email", "xxxxxxxxxx")  
+export FOFA_EMAIL=xxxxxxxxxx
 # Replace xxxxxxxxxx with fofa key
-globals.set_value("fofa_key", "xxxxxxxxxx")
+export FOFA_KEY=xxxxxxxxxx
 ```
 * Shodan key: https://account.shodan.io
 ```bash
 # Replace xxxxxxxxxx with your shodan key
-globals.set_value("shodan_key", "xxxxxxxxxx")
+export SHODAN_KEY=xxxxxxxxxx
 ```
 
 * Ceye info: http://ceye.io
 ```bash
 # Replace xxxxxxxxxx with your own domain name
-globals.set_value("ceye_domain","xxxxxxxxxx")  
+export CEYE_DOMAIN=xxxxxxxxxx
 # Replace xxxxxxxxxx with your own ceye token
-globals.set_value("ceye_token", "xxxxxxxxxx") 
+export CEYE_TOKEN=xxxxxxxxxx
+```
+
+* Hyuga info: http://hyuga.co
+```bash
+# Replace xxxxxxxxxx with your own domain name
+export HYUGA_DOMAIN=xxxxxxxxxx
+# Replace xxxxxxxxxx with your own ceye token
+export HYUGA_TOKEN=xxxxxxxxxx
 ```
 
 ## 📑 Licenses

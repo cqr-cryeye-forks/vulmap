@@ -4,6 +4,8 @@
 # github: https://github.com/zhzyker/vulmap
 # If you have any problems, please give feedback to https://github.com/zhzyker/vulmap/issues
 from module.banner import banner
+from module.utils import get_from_env
+
 print(banner())  # 显示随机banner
 from module.install import require
 require()
@@ -33,7 +35,7 @@ def config():
     globals.set_value("DEBUG", args.debug)  # 设置全局变量DEBUG
     globals.set_value("DELAY", args.delay)  # 设置全局变量延时时间DELAY
     globals.set_value("DNSLOG", args.dnslog)  # 用于判断使用哪个dnslog平台
-    globals.set_value("DISMAP", "flase") # 是否接收dismap识别结果(false/true)
+    globals.set_value("DISMAP", "flase")  # 是否接收dismap识别结果(false/true)
     globals.set_value("VULMAP", str(0.9))  # 设置全局变量程序版本号
     globals.set_value("O_TEXT", args.O_TEXT)  # 设置全局变量OUTPUT判断是否输出TEXT
     globals.set_value("O_JSON", args.O_JSON)  # 设置全局变量OUTPUT判断是否输出JSON
@@ -42,25 +44,25 @@ def config():
     globals.set_value("THREADNUM", args.thread_num)  # 设置全局变量THREADNUM传递线程数量
 
     # 替换自己的 ceye.io 的域名和 token
-    globals.set_value("ceye_domain","xxxxxxxxxx")
-    globals.set_value("ceye_token", "xxxxxxxxxx")
+    globals.set_value("ceye_domain", get_from_env('CEYE_DOMAIN'))
+    globals.set_value("ceye_token", get_from_env('CEYE_TOKEN'))
 
     # 替换自己的 http://hyuga.co 的域名和 token
     # hyuga的域名和token可写可不写，如果不写则自动获得
-    globals.set_value("hyuga_domain", "xxxxxxxxxx")
-    globals.set_value("hyuga_token", "xxxxxxxxxx")
+    globals.set_value("hyuga_domain", get_from_env('HYUGA_DOMAIN'))
+    globals.set_value("hyuga_token", get_from_env('HYUGA_TOKEN'))
 
     # fofa 邮箱和 key，需要手动修改为自己的
-    globals.set_value("fofa_email", "xxxxxxxxxx")
-    globals.set_value("fofa_key", "xxxxxxxxxx")
+    globals.set_value("fofa_email", get_from_env('FOFA_EMAIL'))
+    globals.set_value("fofa_key", get_from_env('FOFA_KEY'))
 
     # shodan key
-    globals.set_value("shodan_key", "xxxxxxxxxx")
+    globals.set_value("shodan_key", get_from_env('SHODAN_KEY'))
 
 
 if __name__ == '__main__':
     try:
-        vulmap_license() # vulmap 用户协议及免责声明
+        vulmap_license()  # vulmap 用户协议及免责声明
         args = arg()  # 初始化各选项参数
         config()  # 加载全局变量
         version_check()  # 检查vulmap版本

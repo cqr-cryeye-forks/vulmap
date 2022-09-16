@@ -26,28 +26,35 @@ pip3 install -r requirements.txt
 # Linux & MacOS & Windows
 python3 vulmap.py -u http://example.com
 ```
-配置 Fofa Api && Shodan Api && Ceye  
-
-使用 Fofa or Shodan 需要修改 vulmap.py 中的配置信息：  
-
-* Fofa info: https://fofa.info/user/users/info  
+Configure Fofa Api && Shodan Api && Ceye && Hyuga
+* Fofa info: https://fofa.so/user/users/info
 ```bash
-# 把xxxxxxxxxx替换成fofa的邮箱
-globals.set_value("fofa_email", "xxxxxxxxxx")  
-# 把xxxxxxxxxx替换成fofa的key
-globals.set_value("fofa_key", "xxxxxxxxxx")  
+add env email and api key
+# Replace xxxxxxxxxx with fofa email
+export FOFA_EMAIL=xxxxxxxxxx
+# Replace xxxxxxxxxx with fofa key
+export FOFA_KEY=xxxxxxxxxx
 ```
-* Shodan key: https://account.shodan.io  
+* Shodan key: https://account.shodan.io
 ```bash
-# 把xxxxxxxxxx替换成自己shodan的key
-globals.set_value("shodan_key", "xxxxxxxxxx")  
+# Replace xxxxxxxxxx with your shodan key
+export SHODAN_KEY=xxxxxxxxxx
 ```
-* Ceye info: http://ceye.io  
+
+* Ceye info: http://ceye.io
 ```bash
-# 把xxxxxxxxxx替换为自己的域名
-globals.set_value("ceye_domain","xxxxxxxxxx")  
-# 把xxxxxxxxxx替换自己ceye的token
-globals.set_value("ceye_token", "xxxxxxxxxx")  
+# Replace xxxxxxxxxx with your own domain name
+export CEYE_DOMAIN=xxxxxxxxxx
+# Replace xxxxxxxxxx with your own ceye token
+export CEYE_TOKEN=xxxxxxxxxx
+```
+
+* Hyuga info: http://hyuga.co
+```bash
+# Replace xxxxxxxxxx with your own domain name
+export HYUGA_DOMAIN=xxxxxxxxxx
+# Replace xxxxxxxxxx with your own ceye token
+export HYUGA_TOKEN=xxxxxxxxxx
 ```
 
 ## 📑 Licenses
