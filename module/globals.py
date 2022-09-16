@@ -14,6 +14,7 @@ def set_value(key, value):
 
 
 def get_value(key, def_value=None):
+    global _global_dict
     try:
         return _global_dict[key]
     except KeyError:

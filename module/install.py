@@ -95,12 +95,9 @@ def require():
         print(banner())  # 显示随机banner
         install_gevent()
         install_crypto()
-        exit(0)
     if r"gevent" in require_list:
         print(banner())  # 显示随机banner
         install_gevent()
-        exit(0)
     if r"crypto" in require_list:
         print(banner())  # 显示随机banner
         install_crypto()
-        exit(0)

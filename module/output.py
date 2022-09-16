@@ -17,9 +17,7 @@ def output(types, item):
         if o_text and types == "text":
             output_text(o_text, item)
         elif o_json and types == "json":
-            output_json(o_json, item)   
-        else:
-            pass
+            output_json(o_json, item)
     except Exception as error:
         print(now.timed(de=0) + color.red("[ERROR] " + error.__traceback__.tb_frame.f_globals['__file__']
                                           + " " + str(error.__traceback__.tb_lineno)))
@@ -58,22 +56,23 @@ def output_json(filename, data):
         vul_host = host_port.hostname
         vul_port = host_port.port
         # vul_u = vul_host + ":" + str(vul_port)
-        if vul_port is None and r"https://" in vul_urls:
-            vul_port = 443
-        elif vul_port is None and r"http://" in vul_urls:
-            vul_port = 80
+        if vul_port is None:
+            if r"https://" in vul_urls:
+                vul_port = 443
+            elif r"http://" in vul_urls:
+                vul_port = 80
         if r"https://" in vul_urls:
             if vul_port is not None:
-                vul_u = "https://" + vul_host + ":" + str(vul_port) + "/" + vul_path
+                vul_u = f"https://{vul_host}:{str(vul_port)}/{vul_path}"
             else:
-                vul_u = "https://" + vul_host + "/" + vul_path
+                vul_u = f"https://{vul_host}/{vul_path}"
         elif r"http://" in vul_urls:
             if vul_port is not None:
-                vul_u = "http://" + vul_host + ":" + str(vul_port) + "/" + vul_path
+                vul_u = f"http://{vul_host}:{str(vul_port)}/{vul_path}"
             else:
-                vul_u = "http://" + vul_host + "/" + vul_path
+                vul_u = f"http://{vul_host}/{vul_path}"
         else:
-            vul_u = "http://" + vul_host + "/" + vul_path
+            vul_u = f"http://{vul_host}/{vul_path}"
         prt_name = data["prt_name"]
         vul_payd = data["vul_payd"]
         vul_type = data["vul_type"]
@@ -148,6 +147,7 @@ def output_json(filename, data):
             item_list.append(obj)
             with open(filename, 'w', encoding='utf-8') as f2:
                 json.dump(item_list, f2, indent=4, ensure_ascii=False)
+
         write_json(json_data)
     except Exception as error:
         print(now.timed(de=0) + color.red("[ERROR] " + error.__traceback__.tb_frame.f_globals['__file__']

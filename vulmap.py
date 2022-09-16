@@ -3,20 +3,21 @@
 # author: zhzyker
 # github: https://github.com/zhzyker/vulmap
 # If you have any problems, please give feedback to https://github.com/zhzyker/vulmap/issues
-from module.banner import banner
+from module.banner import banner, vul_list
+from module.install import require
 from module.utils import get_from_env
 
-print(banner())  # 显示随机banner
-from module.install import require
 require()
-from module.allcheck import version_check
 from module import globals
 from module.argparse import arg
-from core.core import core
+from core.core import Core
 from module.time import now
 from module.color import color
 from thirdparty import urllib3
+
 urllib3.disable_warnings()
+
+print(banner())  # 显示随机banner
 
 
 def config():
@@ -34,7 +35,7 @@ def config():
     globals.set_value("DEBUG", args.debug)  # 设置全局变量DEBUG
     globals.set_value("DELAY", args.delay)  # 设置全局变量延时时间DELAY
     globals.set_value("DNSLOG", args.dnslog)  # 用于判断使用哪个dnslog平台
-    globals.set_value("DISMAP", "flase")  # 是否接收dismap识别结果(false/true)
+    globals.set_value("DISMAP", "false")  # 是否接收dismap识别结果(false/true)
     globals.set_value("VULMAP", str(0.9))  # 设置全局变量程序版本号
     globals.set_value("O_TEXT", args.O_TEXT)  # 设置全局变量OUTPUT判断是否输出TEXT
     globals.set_value("O_JSON", args.O_JSON)  # 设置全局变量OUTPUT判断是否输出JSON
@@ -62,9 +63,13 @@ def config():
 if __name__ == '__main__':
     try:
         args = arg()  # 初始化各选项参数
+        if args.list is False:  # 判断是否显示漏洞列表
+            print(now.timed(de=0) + color.yel_info() + color.yellow(" List of supported vulnerabilities"))
+            print(vul_list())
+            exit(0)
         config()  # 加载全局变量
-        version_check()  # 检查vulmap版本
-        core.control_options(args)  # 运行核心选项控制方法用于处理不同选项并开始扫描
+        core = Core(args=args)
+        core.control_options()  # 运行核心选项控制方法用于处理不同选项并开始扫描
     except KeyboardInterrupt as e:
         print(now.timed(de=0) + color.red_warn() + color.red(" Stop scanning"))
         exit(0)
