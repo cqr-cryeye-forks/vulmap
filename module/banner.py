@@ -3,7 +3,6 @@
 # author: zhzyker
 # github: https://github.com/zhzyker/vulmap
 from module.color import color
-import random
 
 banner_1 = color.yellow("""                   __
                   [  |                              
@@ -13,43 +12,13 @@ banner_1 = color.yellow("""                   __
    \__/   '.__.'_/[___][___||__||__]\'-;__/| ;.___/  
                                           [__|""")
 
-banner_2 = color.yellow(r'''
-                                +---------------+
- How to find vulnerabilities?   |    vulmap     |
-                                +---------------+ 
-    (╯▔＾▔)╯                        \ (•◡ •) / 
-     \   |                            |   /
-￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣''')
-
 
 def banner():
-    o_o = random.choice(range(10))
-    if o_o == 0:
-        return banner_1
-    elif o_o == 1:
-        return banner_1
-    elif o_o == 2:
-        return banner_1
-    elif o_o == 3:
-        return banner_1
-    elif o_o == 3:
-        return banner_1
-    elif o_o == 4:
-        return banner_1
-    elif o_o == 5:
-        return banner_1
-    elif o_o == 6:
-        return banner_1
-    elif o_o == 7:
-        return banner_1
-    elif o_o == 8:
-        return banner_1
-    elif o_o == 9:
-        return banner_2
+    return banner_1
 
 
 def vul_list():
-    vuln_list = color.cyan_fine("""
+    return color.cyan_fine("""
  +-------------------+------------------+-----+-----+-------------------------------------------------------------+
  | Target type       | Vuln Name        | Poc | Exp | Impact Version && Vulnerability description                 |
  +-------------------+------------------+-----+-----+-------------------------------------------------------------+
@@ -141,4 +110,3 @@ def vul_list():
  | VMware vRealize   | CVE-2021-21975   |  Y  |  N  | <= 8.3.0, vmware vrealize operations manager api ssrf       |
  +-------------------+------------------+-----+-----+-------------------------------------------------------------+
     """ + color.yellow("\n Vulmap release does not provide the exploit function after September 1, 2021 \n"))
-    return vuln_list

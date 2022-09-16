@@ -36,48 +36,48 @@ class Core(object):
             print(vul_list())
             exit(0)
         if args.thread_num != 10:  # 判断是否为默认线程
-            print(now.timed(de=0) + color.yel_info() + color.yellow(" Custom thread number: " + str(args.thread_num)))
+            print(now.timed(de=0) + color.yel_info() + color.yellow(f" Custom thread number: {str(args.thread_num)}"))
+
         if args.debug is False:  # 判断是否开启--debug功能
             print(now.timed(de=delay) + color.yel_info() + color.yellow(" Using debug mode to echo debug information"))
             globals.set_value("DEBUG", "debug")  # 设置全局变量DEBUG
         #ceye_api()  # 测试ceye连接性
-        if dns_request(): # 初始化dnslog, 并判断是否可用
-            pass
-        else:
+        if not dns_request():
             print(now_warn + color.red(" Dnslog platform (hyuga.co dnslog.cn ceye.io) is not available"))
-        if args.O_TEXT:  # 判断是否text输出
-            if os.path.isfile(args.O_TEXT):  # 判断text输出文件是否冲突
-                print(now.timed(de=delay) + color.red_warn() + color.red(" The json file: [" + args.O_TEXT + "] already exists"))
-                exit(0)
-        if args.O_JSON:  # 判断是否json输出
-            if os.path.isfile(args.O_JSON):  # 判断json输出文件是否冲突
-                print(now.timed(de=delay) + color.red_warn() + color.red(" The json file: [" + args.O_JSON + "] already exists"))
-                exit(0)
+        if args.O_TEXT and os.path.isfile(args.O_TEXT):
+            print(now.timed(de=delay) + color.red_warn() + color.red(f" The json file: [{args.O_TEXT}] already exists"))
+
+            exit(0)
+        if args.O_JSON and os.path.isfile(args.O_JSON):
+            print(now.timed(de=delay) + color.red_warn() + color.red(f" The json file: [{args.O_JSON}] already exists"))
+
+            exit(0)
         if mode == "poc":  # 判断是否进入poc模式
             if args.url is not None and args.file is None:  # 判断是否为仅-u扫描单个URL
                 args.url = url_check(args.url)  # 处理url格式
                 if survival_check(args.url) == "f":  # 检查目标存活状态
-                    print(now.timed(de=0) + color.red_warn() + color.red(" Survival check failed: " + args.url))
+                    print(now.timed(de=0) + color.red_warn() + color.red(f" Survival check failed: {args.url}"))
+
                     exit(0)  # 单个url时存活失败就退出
-                print(now.timed(de=0) + color.yel_info() + color.cyan(" Start scanning target: " + args.url))
+                print(now.timed(de=0) + color.yel_info() + color.cyan(f" Start scanning target: {args.url}"))
+
                 if args.app is None:  # 判断是否扫描扫描全部webapps
                     globals.set_value("RUNALLPOC", True)  # 扫描单个URL并且所有webapps时RUNALLPOC=True
-                    core.control_webapps("url", args.url, args.app, "poc")
-                else:  # 否则扫描单个webapps
-                    core.control_webapps("url", args.url, args.app, "poc")
+                core.control_webapps("url", args.url, args.app, "poc")
             elif args.file is not None and args.url is None:  # 判断是否为仅-f批量扫描文件
                 if os.path.isfile(args.file):  # 判断批量目标文件是否存在
-                    print(now.timed(de=0) + color.yel_info() + color.cyan(" Start batch scanning target: " + args.file))
+                    print(now.timed(de=0) + color.yel_info() + color.cyan(f" Start batch scanning target: {args.file}"))
+
                 else:  # 没有文件错误并退出
-                    print(now.timed(de=0) + color.red_warn() + color.red(" Not found target file: " + args.file))
+                    print(now.timed(de=0) + color.red_warn() + color.red(f" Not found target file: {args.file}"))
+
                     exit(0)
                 if args.app is None:  # 判断是否扫描扫描全部webapps
                     globals.set_value("RUNALLPOC", "FILE")  # 批量扫描URL并且所有webapps时RUNALLPOC="FILE"
-                    core.control_webapps("file", args.file, args.app, "poc")
-                else:  # 否则批量扫描单个webapps
-                    core.control_webapps("file", args.file, args.app, "poc")
-            elif args.url is None and args.file is None and args.fofa is not None:  # 调用fofa api
-                print(now.timed(de=0) + color.yel_info() + color.yellow(" Use fofa api to search [" + args.fofa + "] and start scanning"))
+                core.control_webapps("file", args.file, args.app, "poc")
+            elif args.url is None and args.fofa is not None:  # 调用fofa api
+                print(now.timed(de=0) + color.yel_info() + color.yellow(f" Use fofa api to search [{args.fofa}] and start scanning"))
+
                 if r"xxxxxx" in globals.get_value("fofa_key"):  # 使用fofa api之前判断fofa信息是否正确
                     print(now.timed(de=0) + color.red_warn() + color.red(" Check fofa email is xxxxxx Please replace key and email"))
                     print(now.timed(de=0) + color.red_warn() + color.red(" Go to https://fofa.so/user/users/info find key and email"))
@@ -87,13 +87,10 @@ class Core(object):
                     print(now.timed(de=0) + color.yel_info() + color.yellow(" Fofa email: " + globals.get_value("fofa_email")))
                     print(now.timed(de=0) + color.yel_info() + color.yellow(" Fofa key: " + globals.get_value("fofa_key")))
                 fofa_list = fofa(args.fofa, args.size)  # 调用fofa api拿到目标数组默认100个
-                if args.app is None:  # 判断是否扫描扫描全部webapps
-                    core.control_webapps("fofa", fofa_list, args.app, "poc")
-                else:
-                    core.control_webapps("fofa", fofa_list, args.app, "poc")
+                core.control_webapps("fofa", fofa_list, args.app, "poc")
+            elif args.url is None and args.shodan is not None:  # 调用fofa api 或者 shodan api
+                print(now.timed(de=0) + color.yel_info() + color.yellow(f" Use shodan api to search [{args.shodan}] and start scanning"))
 
-            elif args.url is None and args.file is None and args.shodan is not None:  # 调用fofa api 或者 shodan api
-                print(now.timed(de=0) + color.yel_info() + color.yellow(" Use shodan api to search [" + args.shodan + "] and start scanning"))
                 if r"xxxxxx" in globals.get_value("shodan_key"):  # 使用shodan api之前判断shodan信息是否正确
                     print(now.timed(de=0) + color.red_warn() + color.red(" Check shodan key is xxxxxx Please replace key"))
                     print(now.timed(de=0) + color.red_warn() + color.red(" Go to https://account.shodan.io/ find key"))
@@ -102,15 +99,13 @@ class Core(object):
                 else:
                     print(now.timed(de=0) + color.yel_info() + color.yellow(" Shodan key: " + globals.get_value("shodan_key")))
                 shodan_list = shodan_api(args.shodan)  # 调用shodan api拿到目标数组默认100个
-                if args.app is None:  # 判断是否扫描扫描全部webapps
-                    core.control_webapps("shodan", shodan_list, args.app, "poc")
-                else:
-                    core.control_webapps("shodan", shodan_list, args.app, "poc")
-
+                core.control_webapps("shodan", shodan_list, args.app, "poc")
             if args.O_TEXT:
-                print(now.timed(de=delay) + color.yel_info() + color.cyan(" Scan result text saved to: " + args.O_TEXT))
+                print(now.timed(de=delay) + color.yel_info() + color.cyan(f" Scan result text saved to: {args.O_TEXT}"))
+
             if args.O_JSON:
-                print(now.timed(de=delay) + color.yel_info() + color.cyan(" Scan result json saved to: " + args.O_JSON))
+                print(now.timed(de=delay) + color.yel_info() + color.cyan(f" Scan result json saved to: {args.O_JSON}"))
+
         else:
             print(now_warn + color.red(" Options error ... ..."))
 
