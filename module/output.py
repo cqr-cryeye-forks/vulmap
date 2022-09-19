@@ -30,7 +30,6 @@ def output_text(filename, item):
 
 
 def output_json(filename, data):
-    print(f'{data=}')
     vul_data = data["vul_data"]
     json_results = []
     vul_path, vul_requ, vul_resp = parse_data(vul_data)
