@@ -77,8 +77,8 @@ class Core(object):
             if self.target_url:  # 判断是否为仅-u扫描单个URL
                 self.target_url = url_check(self.target_url)  # 处理url格式
                 if survival_check(self.target_url):  # 检查目标存活状态
-                    print(survival_check(self.target_url))
                     print(now.timed(de=0) + color.red_warn() + color.red(f" Survival check failed: {self.target_url}"))
+                    output('json', {})
                 else:
                     print(now.timed(de=0) + color.yel_info() + color.cyan(f" Start scanning target: {self.target_url}"))
                     self.control_webapps("url", self.target_url, self.web_app)

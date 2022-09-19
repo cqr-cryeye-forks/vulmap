@@ -30,7 +30,11 @@ def output_text(filename, item):
 
 
 def output_json(filename, data):
-    vul_data = data["vul_data"]
+    try:
+        vul_data = data["vul_data"]
+    except KeyError:
+        write_json([], file_name=filename)
+        return
     json_results = []
     vul_path, vul_requ, vul_resp = parse_data(vul_data)
     try:
@@ -124,7 +128,8 @@ def write_json(obj, file_name):
                         "vuln_class": vuln_class
                     }
                     item_list.append(json_dict)
-        item_list.append(*obj)
+        if len(obj):
+            item_list.append(*obj)
         with open(file_name, 'w', encoding='utf-8') as f2:
             json.dump(item_list, f2, indent=4, ensure_ascii=False)
     except Exception as error:
